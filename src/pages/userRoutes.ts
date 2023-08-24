@@ -3,7 +3,15 @@ import { PrismaClient } from '@prisma/client';
 
 const router = Router();
 const prisma = new PrismaClient();
+//User CRUD
+/*
+    Test with Invoke-WebRequest: 
 
+    Invoke-WebRequest -Method Post -Uri "http://localhost:3000/user/" -Headers @{"Content-Type"="application/json"} -Body '{"name": "Elon Musk", "email": "doge@twitter.com", "username": "elon"}'
+
+*/
+
+//Create User
 router.post('/', async(req, res) => {
     const { email, name, username } = req.body;
     console.log(email ,name, username);
@@ -25,6 +33,8 @@ router.post('/', async(req, res) => {
     
 });
 
+
+// User List
 router.get('/', async(req, res) => {
     const allUser = await prisma.user.findMany();
 
@@ -32,6 +42,8 @@ router.get('/', async(req, res) => {
     
 });
 
+
+// Get One User
 router.get('/:id', async(req, res) => {
     const {id} = req.params;
     const user = await prisma.user.findUnique({ where : {id : Number(id)}})
@@ -39,6 +51,13 @@ router.get('/:id', async(req, res) => {
     
 });
 
+/* 
+    Test with Invoke-WebRequest:
+
+    Invoke-WebRequest -Method Put -Uri "http://localhost:3000/user/6" -Headers @{"Content-Type"="application/json"} -Body '{"name": "Elon Musk", "bio": "I ma da see"}'
+
+*/
+// Update User
 router.put('/:id', async(req, res) => {
     const {id} = req.params;
     const { bio, name, image} = req.body;
@@ -58,6 +77,8 @@ router.put('/:id', async(req, res) => {
     
 });
 
+// Invoke-WebRequest -Method delete "http://localhost:3000/user/4"
+// Delete user
 router.delete('/:id', async(req, res) => {
     const {id} = req.params;
     await prisma.user.delete({where : { id : Number(id)}});
