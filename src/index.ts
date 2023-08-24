@@ -1,10 +1,12 @@
 import express from 'express';
-import home from "./pages/home";
+import userRoutes from "./pages/userRoutes";
+import tweetRoutes from "./pages/tweetRoutes"
 
 const app = express();
 app.use(express.json());
 
-app.use('/home', home);
+app.use('/user', userRoutes);
+app.use('/tweet', tweetRoutes);
 
 app.get('/', (req, res) => {
     res.send("hwllo world, updated");
